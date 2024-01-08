@@ -3,6 +3,7 @@ import { PropsWithChildren } from 'react';
 import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
+import { Navbar } from '@/components/navbar';
 import { db } from '@/lib/prismadb';
 
 interface DashboardLayoutProps extends PropsWithChildren {
@@ -34,7 +35,7 @@ export default async function DashboardLayout({
 
   return (
     <>
-      <div>This will be navbar</div>
+      <Navbar />
       {children}
     </>
   );
