@@ -14,9 +14,5 @@ export default function SetupPage() {
     }
   }, [isOpen, onOpen]);
 
-  return (
-    <div>
-      <p>Setup page</p>
-    </div>
-  );
+  return <div></div>;
 }

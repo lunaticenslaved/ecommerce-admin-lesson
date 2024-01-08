@@ -1,8 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -27,6 +30,8 @@ type Values = z.infer<typeof StoreSchema>;
 export function StoreModal() {
   const { isOpen, onClose } = useStoreModal();
 
+  const [loading, setLoading] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(StoreSchema),
     defaultValues: {
@@ -36,8 +41,18 @@ export function StoreModal() {
 
   const { handleSubmit } = form;
 
-  function onSubmit(values: Values) {
-    console.log(values);
+  async function onSubmit(values: Values) {
+    setLoading(true);
+
+    try {
+      const response = await axios.post('/api/stores', values);
+
+      toast.success('Store created.');
+    } catch (error) {
+      toast.error('Something went wrong.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -57,17 +72,19 @@ export function StoreModal() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="E-Commerce" {...field} />
+                      <Input disabled={loading} placeholder="E-Commerce" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-                <Button variant="outline" onClick={onClose} type="button">
+                <Button disabled={loading} variant="outline" onClick={onClose} type="button">
                   Cancel
                 </Button>
-                <Button type="submit">Continue</Button>
+                <Button disabled={loading} type="submit">
+                  Continue
+                </Button>
               </div>
             </form>
           </Form>
