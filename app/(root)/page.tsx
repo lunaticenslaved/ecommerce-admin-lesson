@@ -1,3 +1,10 @@
+import { UserButton } from '@clerk/nextjs';
+
 export default function Home() {
-  return <p>Hello admin dashboard</p>;
+  return (
+    <div>
+      <p>Protected route</p>
+      <UserButton afterSignOutUrl="/" />
+    </div>
+  );
 }
